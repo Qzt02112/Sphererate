@@ -1,0 +1,18 @@
+protocol: P1_start_conditioned
+gate: B
+claim_tested: a lightweight actual-start residual uses the correct condition rather than extra capacity
+locked_baseline: semantic_static_finalonly_natural_3seed
+matched_control: same actual-trained checkpoint evaluated with swapped and deterministic-random starts; locked static; start-prior-only
+decision_rule: actual beats static and swapped/random with positive paired 95% CI and condition-direction diagnostics
+test_status: frozen_not_evaluated
+
+runs:
+  - name: gate_b_light_condition_actual_seed20260710
+    model: start_conditioned_light_residual
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: gate_b_light_condition_actual_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt

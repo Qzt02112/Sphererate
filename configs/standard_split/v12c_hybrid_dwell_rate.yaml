@@ -1,0 +1,117 @@
+project:
+  name: standard_split_v12c_hybrid_dwell_rate
+  seed: 20260711
+
+paths:
+  processed_root: data/processed
+  processed_name: early_horizon_salient360_spherical2deg_standard_v3
+  runs_root: runs/standard_split_v3
+  reports_root: reports/standard_split_v3
+
+data:
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  target_version: 3
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  family: spherical_dwell_rate
+  semantic_alpha_init: [0.05, 0.20, 0.65, 0.90]
+  reachability_mode: anisotropic_tangent
+  reachability_beta_init: [14.700, 6.604, 0.450, 0.100]
+  reachability_north_beta_init: [5.959, 4.612, 0.450, 0.100]
+  reachability_offset_deg_init:
+    - [2.16, -2.54]
+    - [1.90, -2.94]
+    - [0.00, 0.00]
+    - [0.00, 0.00]
+  maximum_reachability_offset_deg: 30.0
+  interval_residual_scale: 2.0
+  semantic_anchor_checkpoint: runs/standard_split_v3/semantic_anchor_seed20260711/checkpoints/best.pt
+  freeze_semantic_anchor_features: true
+  freeze_semantic_anchor_map: true
+
+train:
+  device: cuda
+  epochs: 25
+  batch_size: 4
+  num_workers: 2
+  lr: 0.0001
+  weight_decay: 0.0001
+  amp: true
+  seed: 20260711
+  data_seed: 20260711
+  sampler_seed: 20260711
+  selection_metric: v11_worst_endpoint_margin_with_density_guard
+  selection_mode: max_with_guard
+  kld_weight: 1.0
+  cc_weight: 0.5
+  sim_weight: 0.25
+  semantic_anchor_weight: 0.0
+  semantic_ratio_weight: 0.0
+  tile_kl_weight: 0.0
+  tile_rank_weight: 0.0
+  raw_tile_kl_weight: 0.10
+  raw_frontier_rank_weight: 0.0
+  soft_topk_coverage_weight: 0.20
+  soft_topk_epsilon: 0.15
+  soft_topk_iterations: 30
+  tile_rows: 8
+  tile_cols: 16
+  tile_horizon_weights: [0.25, 0.50, 1.00, 1.25]
+  coverage_budgets: [5.0, 10.0, 15.0, 20.0]
+  coverage_selection_budgets: [5.0, 10.0, 20.0]
+  selection_reference:
+    source: standard_split_TempSAL_ERP_3seed_val
+    early_macro:
+      kld_sph: 1.082623467486129
+      sim_sph: 0.45552996565134096
+      cc_sph: 0.598804838543638
+      coverage_5: 0.750023582042792
+      coverage_10: 0.8649829040225756
+      coverage_20: 0.9329237479429978
+    horizon_5:
+      kld_sph: 1.12356083209698
+      sim_sph: 0.44182650324625844
+      cc_sph: 0.4711865097754423
+      coverage_5: 0.3579763857982098
+      coverage_10: 0.5085865220962427
+      coverage_20: 0.6957607055321718
+  density_guard:
+    early_macro:
+      kld_max: 1.092623467486129
+      cc_min: 0.593804838543638
+    horizon_5:
+      kld_max: 1.13356083209698
+      cc_min: 0.4661865097754423
+  outer_test: ordinary_repeatable_evaluation_never_model_selection
+
+statistics:
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260805
+
+protocol:
+  stage: standard_split_v12c_three_seed
+  split: train59_val13_test13
+  initialization: train59_static_and_semantic_anchor
+  inputs: [ERP_image, declared_start, horizon]
+  forbidden_inputs: [TempSAL_prediction, gaze_history, test_labels]
+  calibration_parameter_count: 16
+  calibration_source: optimized_on_train59_raw_dwell
+  design_split: train
+  selection_split: val
+  report_split: test
+  forbidden_for_selection: [test]
+  test_may_be_evaluated_repeatedly: true
+  dynamics: early_anisotropic_then_weak_isotropic_nonnegative_dwell_rate
+  deployment_loss: entropy_regularized_multi_budget_soft_topk
+

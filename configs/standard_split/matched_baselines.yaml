@@ -1,0 +1,107 @@
+protocol: standard_split_matched_baselines_v3
+
+data:
+  root: data/processed/early_horizon_salient360_spherical2deg_standard_v3
+  manifest: data/processed/early_horizon_salient360_spherical2deg_standard_v3/manifest.jsonl
+  train_split: train
+  selection_split: val
+  evaluation_splits: [val, test]
+  sealed_splits: []
+  expected_content_counts:
+    train: 59
+    val: 13
+    test: 13
+  primary_eye: R
+
+time:
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  scanpath_step_s: 1.0
+  scanpath_length: 20
+  half_second_policy: first_second_approximation_only
+
+start:
+  mode: per_sample_declared_input
+  pitch_deg: 0.0
+  yaw_deg: 90.0
+  pass_to_conditionable_models: true
+
+reachability:
+  calibration_split: train
+  quantile: 0.95
+  weighting: clipped_dwell_duration
+  distance: great_circle
+  gate: hard
+  radii_deg:
+    0.5: 39.03872819102518
+    1.0: 44.42920781284859
+    3.0: 97.62305601671714
+    5.0: 124.74143906543945
+
+map_adapter:
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  truncate_sigma: 4.0
+  area_normalization: spherical
+  display_smoothing_affects_metrics: false
+
+seeds: [20260710, 20260711, 20260712]
+
+primary_methods:
+  - scandmm_declared_start
+  - pathformer3d
+  - hat_declared_start
+  - panoramic_cnn
+  - bms360
+  - gbvs360
+  - deepgaze_msdb
+
+methods:
+  scandmm_declared_start:
+    tier: matched_learned
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/ScanDMM
+    source_commit: e14d0ef37124157c2a55dd0c88c124108e87becd
+    status: planned
+  pathformer3d:
+    tier: matched_learned
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/Pathformer3D
+    source_commit: ec4b62b8e1b184a866dec8130868ade2fd35bf10
+    status: planned
+  hat_declared_start:
+    tier: matched_recent_scanpath
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/HAT
+    source_commit: 557205d3136a63120041c700ee717196a429e89b
+    status: planned
+  panoramic_cnn:
+    tier: matched_published_static
+    task: static_final_saliency_repeated
+    training_policy: same_split
+    source: third_party/Panoramic-CNN-360-Saliency
+    source_commit: 522e7f352653c5c6fcc99db17ee6f97985c55e31
+    status: planned
+  bms360:
+    tier: deterministic_static
+    task: static_saliency_repeated
+    training_policy: not_applicable
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: planned
+  gbvs360:
+    tier: deterministic_static
+    task: static_saliency_repeated
+    training_policy: not_applicable
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: planned
+  deepgaze_msdb:
+    tier: matched_recent_static_adapter
+    task: train_calibrated_static_final_saliency_repeated
+    training_policy: train_only_calibration
+    source: third_party/deepgaze-msdb
+    source_commit: 90c49a554ce334add49bd54825679f61d0ac32ba
+    status: planned

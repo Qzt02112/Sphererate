@@ -1,0 +1,69 @@
+runs:
+  - name: f2_256_static_30ep
+    model: static
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_static_30ep
+
+  - name: f2_256_parallel_30ep
+    model: parallel
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_parallel_30ep
+
+  - name: f2_256_dytsaldmm_default_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_default_30ep
+
+  - name: f2_256_dytsaldmm_no_temporal_loss_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_no_temporal_loss_30ep
+      loss.temporal: 0.0
+
+  - name: f2_256_dytsaldmm_no_cumulative_loss_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_no_cumulative_loss_30ep
+      loss.cumulative: 0.0
+
+  - name: f2_256_dytsaldmm_no_memory_loss_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_no_memory_loss_30ep
+      loss.memory: 0.0
+
+  - name: f2_256_dytsaldmm_fixed_accumulation_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_fixed_accumulation_30ep
+      model.learned_accumulation: false
+
+  - name: f2_256_dytsaldmm_stronger_temporal_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_stronger_temporal_30ep
+      loss.temporal: 1.0
+      loss.cumulative: 0.5
+
+  - name: f2_256_dytsaldmm_stronger_cumulative_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_stronger_cumulative_30ep
+      loss.temporal: 0.5
+      loss.cumulative: 1.0
+
+  - name: f2_256_dytsaldmm_shuffled_temporal_30ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_dytsaldmm_shuffled_temporal_30ep
+      train.shuffle_temporal_labels: true

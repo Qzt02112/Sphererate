@@ -1,0 +1,7 @@
+runs:
+  - name: f2_256_semantic_static_yaw60_30ep
+  - name: f2_256_teacher_residual_orderloss_yaw60_30ep
+  - name: f2_256_teacher_residual_orderloss_shuffled_yaw60_30ep
+  - name: f2_256_tempsal_temporal_yaw60_30ep
+  - name: f2_256_tempsal_staged_yaw60_30ep
+  - name: f2_256_tempsal_staged_shuffled_yaw60_30ep

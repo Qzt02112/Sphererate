@@ -1,0 +1,34 @@
+runs:
+  - name: f2_semantic_smoke_static
+    model: semantic_static
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_semantic_smoke_static
+      train.max_train_samples: 6
+      train.max_val_samples: 4
+      train.save_predictions: true
+      model.semantic_pretrained: false
+      model.semantic_layer: layer2
+
+  - name: f2_semantic_smoke_dytsaldmm
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_semantic_smoke_dytsaldmm
+      train.max_train_samples: 6
+      train.max_val_samples: 4
+      train.save_predictions: true
+      model.semantic_pretrained: false
+      model.semantic_layer: layer2
+
+  - name: f2_semantic_smoke_dytsaldmm_shuffled
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_semantic_smoke_dytsaldmm_shuffled
+      train.max_train_samples: 6
+      train.max_val_samples: 4
+      train.save_predictions: true
+      train.shuffle_temporal_labels: true
+      model.semantic_pretrained: false
+      model.semantic_layer: layer2

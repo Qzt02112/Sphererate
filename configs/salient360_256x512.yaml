@@ -1,0 +1,80 @@
+project:
+  name: sphererate
+  seed: 20260708
+
+paths:
+  raw_root: ${SCANDMM_ROOT}/data/raw
+  scandmm_processed_root: ${SCANDMM_ROOT}/data/processed
+  third_party_root: ${SCANDMM_ROOT}/baselines/third_party
+  processed_root: data/processed
+  runs_root: runs
+  reports_root: reports
+
+data:
+  dataset: salient360
+  processed_name: salient360_256x512_k6_order
+  image_size: [256, 512]
+  num_bins: 6
+  split_seed: 20260708
+  split_file: data/splits/salient360_seed20260708.json
+  val_fraction: 0.15
+  test_fraction: 0.15
+  map_kernel: erp
+  sigma_px: 10.0
+  area_weighted: true
+  use_official_final_map: false
+  max_images:
+
+train:
+  model: dytsaldmm
+  experiment: dytsaldmm_salient360_256_smoke
+  device: cuda
+  epochs: 3
+  batch_size: 2
+  num_workers: 2
+  lr: 0.0003
+  weight_decay: 0.0001
+  amp: true
+  augment_roll: true
+  augment_roll_degrees:
+  max_train_samples:
+  max_val_samples:
+  save_predictions: true
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  num_bins: 6
+  learned_accumulation: true
+  mixer_use_temporal: true
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  teacher_checkpoint:
+  teacher_residual_scale: 1.0
+  teacher_residual_init_gate: -1.5
+
+loss:
+  final_kl: 1.0
+  final_cc: 1.0
+  final_nss: 0.1
+  static: 0.25
+  temporal: 0.5
+  cumulative: 0.5
+  temporal_bin_kld: 0.0
+  cumulative_bin_kld: 0.0
+  temporal_process_tv: 0.0
+  cumulative_process_tv: 0.0
+  accumulation: 0.1
+  memory: 0.01
+  residual: 0.0001
+  teacher_residual_target: 0.0
+  teacher_residual_target_clip: 4.0
+  teacher_residual_topk: 0.0
+  teacher_residual_topk_frac: 0.1
+  teacher_residual_peak: 0.0
+
+eval:
+  eps: 0.0000001
+  area_weighted: true

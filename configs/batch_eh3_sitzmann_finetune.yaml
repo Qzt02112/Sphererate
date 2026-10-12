@@ -1,0 +1,12 @@
+protocol: salient360-pretrain-sitzmann-finetune
+gate: bounded-train-source-followup
+decision_split: gate
+development_gate_fresh: false
+outer_test_status: sealed_not_materialized
+seed: 20260711
+
+runs:
+  - name: salient360_to_sitzmann_finetune_seed20260711
+    role: candidate_correct
+    conditioning_mode: time
+    target_mode: correct

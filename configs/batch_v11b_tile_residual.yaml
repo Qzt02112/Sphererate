@@ -1,0 +1,12 @@
+protocol: spherehorizon_v11_shared_tile_residual
+gate: V11B-single-seed
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v11b_tile_residual_seed20260711
+    role: v11b_tile_residual
+    conditioning_mode: time
+    target_mode: correct

@@ -1,0 +1,11 @@
+protocol: semantic_reranking_s2_single_seed
+gate: val-only
+development_gate_fresh: false
+outer_test_status: sealed_not_materialized
+seed: 20260711
+
+runs:
+  - name: semantic_reranking_s2_seed20260711
+    role: semantic_reranking_s2
+    conditioning_mode: time
+    target_mode: correct

@@ -1,0 +1,53 @@
+protocol: frozen_external_baseline_benchmark
+version: 1
+status: in_progress
+
+method_lock:
+  name: SphereHorizon
+  checkpoints:
+    - runs/eh3_candidate_correct_seed20260710/checkpoints/best.pt
+    - runs/eh3_candidate_correct_seed20260711/checkpoints/best.pt
+    - runs/eh3_candidate_correct_seed20260712/checkpoints/best.pt
+  post_test_tuning: forbidden
+
+data:
+  root: data/processed/early_horizon_salient360_v1
+  train_split: train
+  adapter_validation_split: val
+  diagnostic_split: gate
+  benchmark_split: test
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+
+evaluation:
+  metrics: [kld_sph, sim_sph, cc_sph]
+  tile_grid: [8, 16]
+  tile_budgets_percent: [5, 10, 20]
+  primary_tile_budget_percent: 10
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260711
+
+baseline_tiers:
+  primary_task_matched:
+    - saltinet
+    - tempsal_erp
+    - published_static_360
+  secondary_scanpath:
+    - scandmm
+    - pathformer3d
+
+scanpath_adapter:
+  coordinate_order: yx
+  time_calibration_priority:
+    - official_source_defined
+    - train_only_physical_observer_fixation_schedule_if_undefined
+  scandmm_time_semantics: one_gaze_point_per_second
+  scandmm_half_second_policy: first_second_approximation_sensitivity_only
+  sensitivity: step_matched
+  label: step_to_time_adaptation
+
+outer_test:
+  status: already_used_once_at_EH5
+  eh6_role: frozen_post_hoc_benchmark_evaluation
+  adapter_selection_from_test: forbidden

@@ -1,0 +1,124 @@
+third_party_root: ${SCANDMM_ROOT}/baselines/third_party
+
+baselines:
+  scandmm:
+    category: scanpath_to_saliency
+    status: local_source_available
+    local_path: ScanDMM
+    repo: https://github.com/xiangjieSui/ScanDMM.git
+    notes: "CVPR 2023 scanpath model; inference exports normalized (y, x) scanpaths."
+    train_hint: "cd {path} && python train.py --seed=1234 --dataset='./Datasets/Sitzmann.pkl' --lr=0.0003 --bs=64 --epochs=500 --save_root='./model/'"
+    infer_hint: "python scripts/run_scandmm_inference.py --config {config} --split {split} --run-dir {out} --n-scanpaths {n_scanpaths} --length {length} --seed {seed} --start-yaw-deg 90 --start-pitch-deg 0"
+
+  pathformer3d:
+    category: scanpath_to_saliency
+    status: local_source_available
+    local_path: Pathformer3D
+    repo: https://github.com/lsztzp/Pathformer3D.git
+    notes: "3D spherical-coordinate scanpath transformer; dataset placement must be adapted."
+    train_hint: "cd {path} && python main.py --work_dir='{out}' --device='cuda:0' --config='config.py'"
+
+  scangan360:
+    category: scanpath_to_saliency
+    status: local_source_available
+    local_path: ScanGAN360
+    repo: https://github.com/DaniMS-ZGZ/ScanGAN360.git
+    notes: "Classic 360 scanpath GAN baseline; legacy PyTorch/CUDA environment."
+    train_hint: "cd {path} && python main.py --mode train"
+    infer_hint: "cd {path} && python main.py --mode inference"
+
+  saltinet:
+    category: temporal_volume
+    status: local_source_available_legacy
+    local_path: saliency-360salient-2017
+    repo: https://github.com/massens/saliency-360salient-2017.git
+    notes: "SaltiNet saliency-volume baseline; Keras/Theano-era code."
+    infer_hint: "cd {path}/src && python 360scanpaths-cli.py"
+
+  pathgan:
+    category: scanpath_to_saliency
+    status: local_source_available_legacy
+    local_path: pathgan
+    repo: https://github.com/imatge-upc/pathgan.git
+    notes: "PathGAN scanpath model; Keras/TensorFlow-era code."
+
+  scandiff:
+    category: scanpath_to_saliency
+    status: local_source_available
+    local_path: ScanDiff
+    repo: https://github.com/aimagelab/ScanDiff.git
+    notes: "Diffusion scanpath source; not 360-specific by default."
+
+  diffeye:
+    category: scanpath_to_saliency
+    status: local_source_available
+    local_path: diffeye
+    repo: https://github.com/RehgLab/diffeye.git
+    notes: "Diffusion eye movement model; adapter needed for 360 saliency."
+
+  saldiff_dtm:
+    category: scanpath_to_saliency
+    status: local_reproduction_adapter_only
+    local_path: SalDiff-DTM
+    repo:
+    notes: "No official source recorded locally; use only as clearly labeled reproduction adapter."
+
+  hats:
+    category: scanpath
+    status: local_source_available
+    local_path: HAT
+    repo: https://github.com/cvlab-stonybrook/HAT.git
+    notes: "Human attention transformer source; useful reference but not a 360 saliency main baseline."
+
+  tempsal:
+    category: temporal_volume
+    status: workspace_source_available_missing_weights_needs_360_adapter
+    local_path: ${TEMPSAL_ROOT}/third_party/Tempsal
+    repo: https://github.com/IVRL/Tempsal.git
+    notes: "TempSAL source; README points to Google Drive checkpoint, but no local weights are present. Needs dataset adapter."
+
+  salbinet360:
+    category: static_360_saliency
+    status: workspace_source_available_missing_weights_matlab_preprocess
+    local_path: ${TEMPSAL_ROOT}/third_party/SalBiNet360
+    repo: https://github.com/githubcbob/SalBiNet360.git
+    notes: "PyTorch implementation of SalBiNet360; README requires Matlab preprocessing and Baidu pre-trained weights, no local .pth present."
+
+  panoramic_cnn_360:
+    category: static_360_saliency
+    status: workspace_source_available_no_weights
+    local_path: ${TEMPSAL_ROOT}/third_party/Panoramic-CNN-360-Saliency
+    repo: https://github.com/DaniMS-ZGZ/Panoramic-CNN-360-Saliency.git
+    notes: "Panoramic convolutions for 360 single-image saliency prediction; source has train/test scripts, but models/checkpoints only contain README placeholders."
+
+  aware360_traditional:
+    category: static_traditional
+    status: workspace_source_available_legacy_external_deps
+    local_path: ${TEMPSAL_ROOT}/third_party/360_aware_saliency
+    repo: https://github.com/MikhailStartsev/360_aware_saliency.git
+    notes: "Traditional 360-aware wrapper around planar predictors; depends on Matlab/eDN/liblinear/SAM Keras1/Theano stack for full model."
+
+  salypath360:
+    category: joint_saliency_scanpath
+    status: source_not_found
+    local_path:
+    repo:
+    notes: "Paper located, but no stable official source found in the first public-source audit."
+
+  mrgan360:
+    category: recurrent_saliency
+    status: source_not_found
+    local_path:
+    repo:
+    notes: "No reliable official source found in the first public-source audit."
+
+ours:
+  static:
+    category: internal_control
+    command: "python scripts/train.py --config {config} --model static --device {device}"
+  parallel:
+    category: internal_control
+    command: "python scripts/train.py --config {config} --model parallel --device {device}"
+  dytsaldmm:
+    category: proposed
+    command: "python scripts/train.py --config {config} --model dytsaldmm --device {device}"

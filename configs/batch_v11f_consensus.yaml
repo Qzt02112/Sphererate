@@ -1,0 +1,12 @@
+protocol: spherehorizon_v11_observer_consensus
+gate: V11F-single-seed
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v11f_consensus_temporal_anchor_seed20260711
+    role: v11f_consensus_temporal_anchor
+    conditioning_mode: time
+    target_mode: correct

@@ -1,0 +1,10 @@
+protocol: standard_split_semantic_anchor_single_seed
+decision_split: val
+outer_test_status: ordinary_repeatable_evaluation_never_model_selection
+seed: 20260711
+
+runs:
+  - name: semantic_anchor_seed20260711
+    role: semantic_anchor
+    conditioning_mode: time
+    target_mode: correct

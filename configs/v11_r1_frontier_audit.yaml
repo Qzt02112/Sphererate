@@ -1,0 +1,29 @@
+project:
+  name: spherehorizon_v11_r1_frontier_audit
+  seed: 20260805
+
+paths:
+  processed_root: data/processed/early_horizon_salient360_spherical2deg_v2
+  report_root: reports/v11_r1_frontier_audit
+
+protocol:
+  split: val
+  forbidden_splits: [gate, test, sitzmann]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  tile_grid: [8, 16]
+  budgets_percent: [5.0, 10.0, 20.0]
+  budget_rounding: ceil
+  target: raw_clipped_fixation_dwell
+
+methods:
+  - name: SphereHorizon
+    family: spherehorizon
+    checkpoint: runs/kernel_v2_candidate_correct_seed20260711/checkpoints/best.pt
+  - name: S2 semantic anchor
+    family: spherehorizon
+    checkpoint: runs/semantic_reranking_s2_matched_anchor_seed20260711/checkpoints/best.pt
+  - name: TempSAL-ERP
+    family: registry
+    registry_name: semantic_tempsal_temporal
+    checkpoint: runs/kernel_v2_tempsal_erp_seed20260711/checkpoints/best.pt

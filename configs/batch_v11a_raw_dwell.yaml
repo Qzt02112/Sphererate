@@ -1,0 +1,12 @@
+protocol: spherehorizon_v11_raw_dwell_decision_calibration
+gate: V11A-loss-only
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v11a_raw_dwell_s2_seed20260711
+    role: v11a_raw_dwell_s2
+    conditioning_mode: time
+    target_mode: correct

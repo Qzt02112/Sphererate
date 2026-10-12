@@ -1,0 +1,19 @@
+protocol: standard_split_v12c_mechanism_ablation
+decision_split: val
+outer_test_status: ordinary_repeatable_evaluation_never_model_selection
+seed: 20260711
+
+# Isolates the temporal interval-residual branch.  With the semantic anchor
+# frozen (features + semantic_block + semantic_out), rho is the only content
+# head that learns; zeroing it leaves only the per-scale alpha/beta/offset
+# parameters trainable, so this run measures what the temporal branch is
+# actually worth rather than how much capacity it adds.
+runs:
+  - name: v12c_no_residual_seed20260711
+    role: no_residual
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_interval_residual: false
+      use_start_cost: true
+      accumulation_mode: cumulative_rate

@@ -1,0 +1,58 @@
+runs:
+  - name: jufe_start_smoke_image_only_semstatic
+    model: semantic_static
+    overrides:
+      train.epochs: 2
+      train.experiment: jufe_start_smoke_image_only_semstatic
+      train.progress_bar: false
+      train.max_train_samples: 64
+      train.max_val_samples: 32
+      train.condition_startpoint_channels: false
+      train.startpoint_condition_mode: actual
+      model.in_channels: 8
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+
+  - name: jufe_start_smoke_teacher_residual_actual
+    model: start_conditioned_teacher_residual
+    overrides:
+      train.epochs: 2
+      train.experiment: jufe_start_smoke_teacher_residual_actual
+      train.progress_bar: false
+      train.max_train_samples: 64
+      train.max_val_samples: 32
+      train.condition_startpoint_channels: true
+      train.startpoint_condition_mode: actual
+      model.in_channels: 13
+      model.static_in_channels: 8
+      model.teacher_checkpoint: runs/multi360_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.0
+      loss.cumulative: 1.0
+      loss.teacher_residual_target: 0.25
+      loss.teacher_residual_topk: 0.25
+      loss.teacher_residual_topk_frac: 0.1
+
+  - name: jufe_start_smoke_teacher_residual_swapped
+    model: start_conditioned_teacher_residual
+    overrides:
+      train.epochs: 2
+      train.experiment: jufe_start_smoke_teacher_residual_swapped
+      train.progress_bar: false
+      train.max_train_samples: 64
+      train.max_val_samples: 32
+      train.condition_startpoint_channels: true
+      train.startpoint_condition_mode: swapped
+      model.in_channels: 13
+      model.static_in_channels: 8
+      model.teacher_checkpoint: runs/multi360_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.0
+      loss.cumulative: 1.0
+      loss.teacher_residual_target: 0.25
+      loss.teacher_residual_topk: 0.25
+      loss.teacher_residual_topk_frac: 0.1

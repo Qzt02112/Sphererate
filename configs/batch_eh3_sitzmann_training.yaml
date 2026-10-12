@@ -1,0 +1,12 @@
+protocol: sitzmann-official-train-source-comparison
+gate: controlled-train-source-comparison
+decision_split: gate
+development_gate_fresh: false
+outer_test_status: sealed_not_materialized
+seed: 20260711
+
+runs:
+  - name: sitzmann_official_candidate_correct_seed20260711
+    role: candidate_correct
+    conditioning_mode: time
+    target_mode: correct

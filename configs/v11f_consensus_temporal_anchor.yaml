@@ -1,0 +1,109 @@
+project:
+  name: spherehorizon_v11f_consensus_temporal_anchor
+  seed: 20260711
+
+paths:
+  processed_root: data/processed
+  processed_name: early_horizon_salient360_spherical2deg_v2
+  consensus_root: data/processed/v11_raw_tile_consensus_seed20260805
+  runs_root: runs
+  reports_root: reports
+
+data:
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  target_version: 2
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  family: template_horizon_semantic_observer_consensus
+  residual_fusion: temporal_semantic_anchor
+  semantic_alpha_init: [0.10, 0.30, 0.50, 0.60]
+  freeze_semantic_anchor_features: true
+  freeze_semantic_anchor_map: false
+  allow_partial_init: true
+  partial_init_allowed_prefixes: ["temporal_semantic_out."]
+  initialize_temporal_anchor_from_static: true
+
+train:
+  device: cuda
+  epochs: 30
+  batch_size: 4
+  num_workers: 2
+  lr: 0.0001
+  weight_decay: 0.0001
+  amp: true
+  seed: 20260711
+  data_seed: 20260711
+  sampler_seed: 20260711
+  selection_metric: v11_worst_endpoint_margin_with_density_guard
+  selection_mode: max_with_guard
+  kld_weight: 1.0
+  cc_weight: 0.5
+  sim_weight: 0.5
+  semantic_anchor_weight: 0.5
+  semantic_anchor_cc_weight: 0.5
+  temporal_anchor_weight: 0.5
+  temporal_anchor_cc_weight: 0.5
+  temporal_anchor_sim_weight: 0.25
+  semantic_ratio_weight: 0.0
+  tile_kl_weight: 0.0
+  tile_rank_weight: 0.0
+  raw_tile_kl_weight: 0.15
+  raw_frontier_rank_weight: 0.0
+  consensus_rank_weight: 0.10
+  consensus_rank_temperature: 0.25
+  consensus_minimum_difference: 0.10
+  tile_rows: 8
+  tile_cols: 16
+  tile_horizon_weights: [0.10, 0.25, 1.00, 2.00]
+  coverage_budgets: [5.0, 10.0, 20.0]
+  coverage_selection_budgets: [5.0, 10.0, 20.0]
+  selection_reference:
+    source: TempSAL-ERP_3seed_Salient360_val
+    early_macro:
+      kld_sph: 1.1187039209000857
+      sim_sph: 0.4446730610029197
+      cc_sph: 0.5881363944916699
+      coverage_5: 0.7383555119422901
+      coverage_10: 0.8371052017904181
+      coverage_20: 0.9204115890022415
+    horizon_5:
+      kld_sph: 1.2125685038389984
+      sim_sph: 0.4184489437827358
+      cc_sph: 0.4417222020340404
+      coverage_5: 0.3251118997329180
+      coverage_10: 0.4677827616099049
+      coverage_20: 0.6670177291374980
+  density_guard:
+    early_macro:
+      kld_max: 1.1287039209000857
+      cc_min: 0.5831363944916699
+    horizon_5:
+      kld_max: 1.2225685038389984
+      cc_min: 0.4367222020340404
+  outer_test: forbidden
+
+statistics:
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260805
+
+protocol:
+  stage: V11F_single_seed_observer_consensus
+  initialization: V11A_static_anchor_repeated_across_horizons
+  design_split: train
+  selection_split: val
+  forbidden_for_selection: [gate, test, sitzmann]
+  consensus_source_split: train_only
+  consensus_observer_half_samples: 32
+  hard_topk_rank_loss: disabled
+  outer_test_target_loads: 0

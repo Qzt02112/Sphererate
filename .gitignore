@@ -1,0 +1,55 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# ---- Test / lint caches ----
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- LaTeX build artifacts ----
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+texput.log
+
+# ---- Editor / OS ----
+.vscode/
+.idea/
+.DS_Store
+
+# ---- Large artifacts intentionally NOT in this repo ----
+# Datasets, processed data, checkpoints, and third-party
+# baseline sources live in the full delivery package, not on GitHub.
+data/processed/
+runs/
+third_party/
+logs/
+reports/
+output/
+paper/
+temp/
+
+# ---- Model / data binaries (never commit) ----
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.pkllv77l_sp.part
+*.npz
+*.tar
+*.tar.zst
+*.zip

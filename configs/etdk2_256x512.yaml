@@ -1,0 +1,25 @@
+project:
+  name: sphererate
+  seed: 20260711
+
+paths:
+  raw_root: ${SCANDMM_ROOT}/data/raw
+  processed_root: data/processed
+  runs_root: runs
+  reports_root: reports
+
+data:
+  dataset: etdk2
+  processed_name: etdk2_salient360shared_256x512_k6_session_v1
+  image_size: [256, 512]
+  num_bins: 6
+  split_seed: 20260711
+  val_fraction: 0.15
+  test_fraction: 0.15
+  sigma_px: 10.0
+  area_weighted: true
+  etdk2_min_session_samples: 100
+  etdk2_min_session_duration_s: 24.0
+  etdk2_force_rebuild: false
+
+# Data preparation only. No training block is intentionally defined.

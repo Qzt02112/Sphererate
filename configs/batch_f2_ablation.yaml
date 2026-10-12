@@ -1,0 +1,39 @@
+runs:
+  - name: f2_static_20ep
+    model: static
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_static_20ep
+
+  - name: f2_parallel_20ep
+    model: parallel
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_parallel_20ep
+
+  - name: f2_dytsaldmm_20ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_dytsaldmm_20ep
+
+  - name: f2_dytsaldmm_no_temporal_loss_20ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_dytsaldmm_no_temporal_loss_20ep
+      loss.temporal: 0.0
+
+  - name: f2_dytsaldmm_no_cumulative_loss_20ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_dytsaldmm_no_cumulative_loss_20ep
+      loss.cumulative: 0.0
+
+  - name: f2_dytsaldmm_shuffled_temporal_20ep
+    model: dytsaldmm
+    overrides:
+      train.epochs: 20
+      train.experiment: f2_dytsaldmm_shuffled_temporal_20ep
+      train.shuffle_temporal_labels: true

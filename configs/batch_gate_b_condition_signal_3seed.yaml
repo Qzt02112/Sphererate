@@ -1,0 +1,38 @@
+protocol: P1_start_conditioned
+gate: B
+claim_tested: a lightweight actual-start residual uses the correct condition consistently across three seeds
+locked_baseline: semantic_static_finalonly_natural_3seed
+matched_control: each actual-trained checkpoint is evaluated with actual, swapped, deterministic-random, static, and start-prior inputs
+decision_rule: actual beats static and swapped/random in all seeds with positive grouped paired 95% CI and positive condition-direction alignment
+test_status: frozen_not_evaluated
+
+runs:
+  - name: gate_b_light_condition_actual_seed20260710
+    model: start_conditioned_light_residual
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: gate_b_light_condition_actual_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt
+
+  - name: gate_b_light_condition_actual_seed20260711
+    model: start_conditioned_light_residual
+    overrides:
+      project.seed: 20260711
+      train.data_seed: 20260711
+      train.sampler_seed: 20260711
+      train.startpoint_random_seed: 20260711
+      train.experiment: gate_b_light_condition_actual_seed20260711
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260711/checkpoints/best.pt
+
+  - name: gate_b_light_condition_actual_seed20260712
+    model: start_conditioned_light_residual
+    overrides:
+      project.seed: 20260712
+      train.data_seed: 20260712
+      train.sampler_seed: 20260712
+      train.startpoint_random_seed: 20260712
+      train.experiment: gate_b_light_condition_actual_seed20260712
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260712/checkpoints/best.pt

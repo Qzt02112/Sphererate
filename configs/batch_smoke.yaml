@@ -1,0 +1,22 @@
+runs:
+  - name: static_smoke
+    model: static
+    overrides:
+      train.epochs: 1
+      train.experiment: static_smoke
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+  - name: parallel_smoke
+    model: parallel
+    overrides:
+      train.epochs: 1
+      train.experiment: parallel_smoke
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+  - name: dytsaldmm_smoke
+    model: dytsaldmm
+    overrides:
+      train.epochs: 1
+      train.experiment: dytsaldmm_smoke
+      train.max_train_samples: 8
+      train.max_val_samples: 4

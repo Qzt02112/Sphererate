@@ -1,0 +1,45 @@
+# HISTORICAL/CLOSED: referenced JUFE data and checkpoints were cleaned on 2026-07-13.
+protocol: P1_start_conditioned_recovery
+gate: R0
+claim_tested: image content provides complementary information beyond a learned universal start template
+training: forbidden
+test_status: frozen_not_evaluated
+
+paths:
+  conditioned_root: data/processed/jufe_start_conditioned_256x512_k6_order_groupdisjoint_v1
+  start_only_checkpoint: runs/p1_pilot_learned_start_only_seed20260710/checkpoints/best.pt
+  static_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt
+  residual_checkpoint: runs/gate_b_light_condition_actual_seed20260710/checkpoints/best.pt
+  output_root: reports/gate_r0_content_interaction
+
+fusion:
+  alpha_grid: [0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00]
+  alpha_selection_split: train
+  evaluation_split: val
+  selection_metric: kld_sph
+  modes: [density, log_density]
+
+statistics:
+  primary_metrics: [kld_sph, sim_sph]
+  secondary_metrics: [cc_sph, nss, auc_judd]
+  bootstrap_group: base_image_id
+  bootstrap_iterations: 10000
+  bootstrap_seed: 20260711
+
+wrong_image:
+  seed: 20260711
+  replace_channels: [0, 8]
+  require_different_group_id: true
+  one_to_one_permutation: true
+
+runtime:
+  device: cuda
+  batch_size: 8
+  num_workers: 4
+  reuse_predictions: true
+
+decision_rule:
+  fusion_requires_positive_ci: [kld_sph, sim_sph]
+  fusion_no_significant_regression: [cc_sph]
+  residual_requires_actual_image_better_than_wrong_image: [kld_sph, sim_sph]
+  pass: at_least_one_fusion_passes_and_residual_wrong_image_control_passes

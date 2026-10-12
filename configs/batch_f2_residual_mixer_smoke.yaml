@@ -1,0 +1,33 @@
+runs:
+  - name: f2_resmix_smoke_directsum
+    model: directsum
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_resmix_smoke_directsum
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+
+  - name: f2_resmix_smoke_tempsal_mixer
+    model: tempsal_mixer
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_resmix_smoke_tempsal_mixer
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+
+  - name: f2_resmix_smoke_residual_mixer
+    model: residual_mixer
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_resmix_smoke_residual_mixer
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+
+  - name: f2_resmix_smoke_residual_mixer_no_temporal_inputs
+    model: residual_mixer
+    overrides:
+      train.epochs: 2
+      train.experiment: f2_resmix_smoke_residual_mixer_no_temporal_inputs
+      train.max_train_samples: 8
+      train.max_val_samples: 4
+      model.mixer_use_temporal: false

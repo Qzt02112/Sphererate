@@ -1,0 +1,13 @@
+flowchart LR
+  image["ERP RGB + geometry"] --> enc["One shared ERP-aware encoder"]
+  enc --> static["Strong static final head"]
+  static --> base["Base population map"]
+
+  traincond["Training only\nstart/time condition"] --> residual["Shared bounded residual head"]
+  enc --> residual
+  residual --> condmaps["Condition-specific maps"]
+
+  condmaps --> oracle["P1 conditioned oracle\ngiven start"]
+  condmaps --> marginal["Marginalize latent conditions"]
+  base --> marginal
+  marginal --> final["P0 image-only final map"]

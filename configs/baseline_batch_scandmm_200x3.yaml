@@ -1,0 +1,36 @@
+defaults:
+  dataset: salient360
+  device: cuda
+  config: configs/default.yaml
+
+tasks:
+  - name: scandmm
+    stage: infer
+    split: val
+    out: runs/f3_scandmm_seed1234_val_200
+    vars: {n_scanpaths: 200, length: 20, seed: 1234}
+  - name: scandmm
+    stage: infer
+    split: test
+    out: runs/f3_scandmm_seed1234_test_200
+    vars: {n_scanpaths: 200, length: 20, seed: 1234}
+  - name: scandmm
+    stage: infer
+    split: val
+    out: runs/f3_scandmm_seed2025_val_200
+    vars: {n_scanpaths: 200, length: 20, seed: 2025}
+  - name: scandmm
+    stage: infer
+    split: test
+    out: runs/f3_scandmm_seed2025_test_200
+    vars: {n_scanpaths: 200, length: 20, seed: 2025}
+  - name: scandmm
+    stage: infer
+    split: val
+    out: runs/f3_scandmm_seed3407_val_200
+    vars: {n_scanpaths: 200, length: 20, seed: 3407}
+  - name: scandmm
+    stage: infer
+    split: test
+    out: runs/f3_scandmm_seed3407_test_200
+    vars: {n_scanpaths: 200, length: 20, seed: 3407}

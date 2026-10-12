@@ -1,0 +1,185 @@
+protocol: kernel_v2_matched_baselines_v1
+
+data:
+  root: data/processed/early_horizon_salient360_spherical2deg_v2
+  manifest: data/processed/early_horizon_salient360_spherical2deg_v2/manifest.jsonl
+  train_split: train
+  selection_split: val
+  evaluation_splits: [val, gate]
+  sealed_splits: [test]
+  expected_content_counts:
+    train: 50
+    val: 9
+    gate: 13
+    test: 13
+  primary_eye: R
+
+time:
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  scanpath_step_s: 1.0
+  scanpath_length: 20
+  half_second_policy: first_second_approximation_only
+
+start:
+  mode: per_sample_declared_input
+  pitch_deg: 0.0
+  yaw_deg: 90.0
+  pass_to_conditionable_models: true
+
+reachability:
+  calibration_split: train
+  quantile: 0.95
+  weighting: clipped_dwell_duration
+  distance: great_circle
+  gate: hard
+  radii_deg:
+    0.5: 39.391805352924834
+    1.0: 44.41630265764504
+    3.0: 97.8417141613422
+    5.0: 125.03492014657363
+
+map_adapter:
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  truncate_sigma: 4.0
+  area_normalization: spherical
+  display_smoothing_affects_metrics: false
+
+seeds: [20260710, 20260711, 20260712]
+
+primary_methods:
+  - spherehorizon_v2
+  - tempsal_erp_v2
+  - panoramic_cnn_v2
+  - scandmm_declared_start_v3
+  - pathformer3d_retrained_v2
+  - hat_erp_declared_start_v1
+  - bms360
+  - gbvs360
+  - panoramic_cnn_reachable_v2
+  - bms360_reachable
+  - gbvs360_reachable
+  - deepgaze_msdb_erp_v2
+  - deepgaze_msdb_reachable_v2
+
+methods:
+  spherehorizon_v2:
+    tier: matched_learned
+    task: cumulative_population_saliency
+    training_policy: same_split
+    source: local
+    source_commit: workspace
+    status: evaluated
+  tempsal_erp_v2:
+    tier: matched_learned
+    task: cumulative_population_saliency
+    training_policy: same_split
+    source: local
+    source_commit: workspace
+    status: evaluated
+  panoramic_cnn_v2:
+    tier: matched_published_static
+    task: static_final_saliency_repeated
+    training_policy: same_split
+    source: third_party/Panoramic-CNN-360-Saliency
+    source_commit: 522e7f352653c5c6fcc99db17ee6f97985c55e31
+    status: evaluated
+  scandmm_retrained_v2:
+    tier: matched_learned
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/ScanDMM
+    source_commit: e14d0ef37124157c2a55dd0c88c124108e87becd
+    status: evaluated_with_training_condition_caveat
+  scandmm_declared_start_v3:
+    tier: matched_learned
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/ScanDMM
+    source_commit: e14d0ef37124157c2a55dd0c88c124108e87becd
+    status: evaluated
+  pathformer3d_retrained_v2:
+    tier: matched_learned
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/Pathformer3D
+    source_commit: ec4b62b8e1b184a866dec8130868ade2fd35bf10
+    status: evaluated
+  hat_erp_declared_start_v1:
+    tier: matched_recent_scanpath
+    task: second_sampled_scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/baselines/third_party/HAT
+    source_commit: 557205d3136a63120041c700ee717196a429e89b
+    conditioning: declared_start_as_observed_history_token
+    status: evaluated
+  bms360:
+    tier: deterministic_static
+    task: static_saliency_repeated
+    training_policy: not_applicable
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: evaluated
+  gbvs360:
+    tier: deterministic_static
+    task: static_saliency_repeated
+    training_policy: not_applicable
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: evaluated
+  panoramic_cnn_reachable_v2:
+    tier: start_conditioned_static
+    task: train_calibrated_reachability_filter_of_static_final_saliency
+    training_policy: train_only_calibration
+    source: third_party/Panoramic-CNN-360-Saliency
+    source_commit: 522e7f352653c5c6fcc99db17ee6f97985c55e31
+    status: evaluated
+  bms360_reachable:
+    tier: start_conditioned_static
+    task: train_calibrated_reachability_filter_of_static_final_saliency
+    training_policy: train_only_calibration
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: evaluated
+  gbvs360_reachable:
+    tier: start_conditioned_static
+    task: train_calibrated_reachability_filter_of_static_final_saliency
+    training_policy: train_only_calibration
+    source: Telecommunication-Telemedia-Assessment/GBVS360-BMS360-ProSal
+    source_commit: d0312f54a28e1ef2cf1e1581241571d9612bb36c
+    status: evaluated
+  deepgaze_msdb_erp_v2:
+    tier: matched_recent_static_adapter
+    task: train_calibrated_static_final_saliency_repeated
+    training_policy: train_only_calibration
+    source: third_party/deepgaze-msdb
+    source_commit: 90c49a554ce334add49bd54825679f61d0ac32ba
+    status: evaluated
+  deepgaze_msdb_reachable_v2:
+    tier: start_conditioned_recent_static
+    task: train_calibrated_reachability_filter_of_deepgaze_msdb_final_saliency
+    training_policy: train_only_calibration
+    source: third_party/deepgaze-msdb
+    source_commit: 90c49a554ce334add49bd54825679f61d0ac32ba
+    status: evaluated
+  saldiff_like_local:
+    tier: local_reproduction
+    task: scanpath
+    training_policy: same_split
+    source: ${SCANDMM_ROOT}/scandmmpp/baselines/saldiff_dtm_adapter.py
+    source_commit: local_unofficial
+    status: ineligible_hash_image_condition
+  scandmm_official:
+    tier: external_pretrained
+    task: second_sampled_scanpath
+    training_policy: external_pretrained
+    source: ${SCANDMM_ROOT}/baselines/third_party/ScanDMM
+    source_commit: e14d0ef37124157c2a55dd0c88c124108e87becd
+    status: diagnostic_only
+  saltinet_official:
+    tier: external_pretrained
+    task: coarse_saliency_volume
+    training_policy: external_pretrained
+    source: ${SCANDMM_ROOT}/baselines/third_party/saliency-360salient-2017
+    source_commit: external_overlap_unknown
+    status: diagnostic_only

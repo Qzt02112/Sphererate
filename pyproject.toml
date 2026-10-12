@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sphererate"
+version = "0.1.0"
+description = "Start-aware early cumulative saliency prediction for 360-degree ERP images"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "Pillow>=9.1",
+  "PyYAML",
+  "requests",
+  "torch",
+  "torchvision",
+  "tqdm",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]

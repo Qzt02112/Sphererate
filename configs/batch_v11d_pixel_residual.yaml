@@ -1,0 +1,12 @@
+protocol: spherehorizon_v11_horizon_pixel_residual
+gate: V11D-single-seed
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v11d_pixel_residual_seed20260711
+    role: v11d_pixel_residual
+    conditioning_mode: time
+    target_mode: correct

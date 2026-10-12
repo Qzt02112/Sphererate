@@ -1,0 +1,20 @@
+defaults:
+  dataset: salient360
+  split: val
+  device: cuda
+  config: configs/default.yaml
+
+tasks:
+  - name: static
+    stage: train
+  - name: parallel
+    stage: train
+  - name: dytsaldmm
+    stage: train
+  - name: scandmm
+    stage: infer
+    out: runs/scandmm_val_200
+    vars:
+      n_scanpaths: 200
+      length: 20
+      seed: 1234

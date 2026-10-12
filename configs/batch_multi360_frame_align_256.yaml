@@ -1,0 +1,66 @@
+runs:
+  - name: multi360_framealign_keepcum_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_framealign_keepcum_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.temporal_frame_align: 1.0
+
+  - name: multi360_framealign_keepcum_shuffled_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_framealign_keepcum_shuffled_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.shuffle_temporal_labels: true
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.temporal_frame_align: 1.0
+
+  - name: multi360_framealign_lowcum_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_framealign_lowcum_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.temporal_frame_align: 1.0
+      loss.cumulative: 0.1
+      loss.accumulation: 0.0
+
+  - name: multi360_framealign_lowcum_shuffled_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_framealign_lowcum_shuffled_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.shuffle_temporal_labels: true
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.temporal_frame_align: 1.0
+      loss.cumulative: 0.1
+      loss.accumulation: 0.0

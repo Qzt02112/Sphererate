@@ -1,0 +1,44 @@
+protocol: image_only_temporal_auxiliary
+gate: P2-pilot
+claim_tested: chronological population-scanpath supervision improves image-only final saliency beyond matched controls
+decision_split: gate
+test_status: frozen_not_evaluated
+bootstrap_group: canonical_content_id
+bootstrap_seed: 20260711
+bootstrap_resamples: 10000
+
+runs:
+  - name: p2_final_only_seed20260711
+    role: final_only
+    model: semantic_static_aux
+    overrides: &common
+      project.seed: 20260711
+      train.data_seed: 20260711
+      train.sampler_seed: 20260711
+      train.temporal_target_mode: correct
+      loss.temporal: 0.0
+
+  - name: p2_temporal_correct_seed20260711
+    role: temporal_correct
+    model: semantic_static_aux
+    overrides:
+      <<: *common
+      train.temporal_target_mode: correct
+      loss.temporal: 0.5
+
+  - name: p2_temporal_shuffled_seed20260711
+    role: temporal_shuffled
+    model: semantic_static_aux
+    overrides:
+      <<: *common
+      train.temporal_target_mode: shuffled
+      loss.temporal: 0.5
+
+  - name: p2_capacity_final_repeat_seed20260711
+    role: capacity_final_repeat
+    model: semantic_static_aux
+    overrides:
+      <<: *common
+      train.temporal_target_mode: final_repeat
+      loss.temporal: 0.5
+

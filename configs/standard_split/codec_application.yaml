@@ -1,0 +1,43 @@
+protocol: standard_split_real_hevc_tile_prefetch_v1
+
+data:
+  processed_root: data/processed/early_horizon_salient360_spherical2deg_standard_v3
+  original_archive: data/raw/salient360_official/Image_Stimuli.7z
+  original_manifest: data/interim/salient360_codec_originals/manifest.jsonl
+  split: test
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+
+codec:
+  implementation: ffmpeg_libx265
+  mode: independent_hevc_intra_tiles
+  source_resolution: official_native_erp
+  byte_accounting: raw_independently_decodable_elementary_stream_payload
+  pixel_format: yuv420p
+  high_qp: 22
+  low_qp: 42
+  tile_rows: 8
+  tile_cols: 16
+  ffmpeg_threads: 1
+
+allocation:
+  upgrade_budget_percent: [5.0, 10.0, 15.0, 20.0]
+  rule: greedy_predicted_rank_skip_if_next_tile_exceeds_cap
+  cap_definition: all_low_bytes_plus_fraction_of_all_high_minus_all_low
+
+methods:
+  - early_template
+  - tempsal_erp_3seed_mean
+  - sphererate_3seed_mean
+  - gt_attention_oracle
+
+statistics:
+  unit: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260806
+
+audit:
+  expected_archive_md5: ac1a471e058177705ea96120af19ff2c
+  expected_total_contents: 85
+  expected_test_contents: 13
+  test_targets_allowed_for: [evaluation, gt_attention_oracle_upper_bound]
+  test_targets_forbidden_for: [training, checkpoint_selection, learned_method_ranking]

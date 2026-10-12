@@ -1,0 +1,70 @@
+project:
+  name: spherehorizon_semantic_anchor_s2
+  seed: 20260711
+
+paths:
+  processed_root: data/processed
+  processed_name: early_horizon_salient360_spherical2deg_v2
+  runs_root: runs
+  reports_root: reports
+
+data:
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  target_version: 2
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  family: template_shared_semantic_anchor
+  residual_fusion: semantic_anchor
+  residual_bound: 4.0
+
+train:
+  device: cuda
+  epochs: 30
+  batch_size: 4
+  num_workers: 2
+  lr: 0.0003
+  weight_decay: 0.0001
+  amp: true
+  seed: 20260711
+  data_seed: 20260711
+  sampler_seed: 20260711
+  selection_metric: coverage_5_10_with_kld_guard
+  selection_mode: max_with_guard
+  kld_guard_max: 1.10999
+  kld_guard_source: current_val_early_macro_kld_1.08999_plus_0.02
+  kld_weight: 1.0
+  cc_weight: 0.5
+  semantic_anchor_weight: 0.5
+  semantic_anchor_cc_weight: 0.5
+  semantic_ratio_weight: 0.10
+  semantic_ratio_clip: 4.0
+  tile_kl_weight: 0.10
+  tile_rank_weight: 0.05
+  tile_rank_temperature: 0.25
+  tile_rows: 8
+  tile_cols: 16
+  coverage_budgets: [5.0, 10.0, 20.0]
+  coverage_selection_budgets: [5.0, 10.0]
+  outer_test: forbidden
+
+statistics:
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260714
+
+protocol:
+  stage: S2_single_seed_after_registered_S1_fail
+  design_split: train
+  selection_split: val
+  forbidden_for_selection: [gate, test, sitzmann]
+  sealed_test_target_loads: 0

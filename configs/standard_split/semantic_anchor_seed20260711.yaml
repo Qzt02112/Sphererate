@@ -1,0 +1,74 @@
+project:
+  name: standard_split_semantic_anchor_s2
+  seed: 20260711
+
+paths:
+  processed_root: data/processed
+  processed_name: early_horizon_salient360_spherical2deg_standard_v3
+  runs_root: runs/standard_split_v3
+  reports_root: reports/standard_split_v3
+
+data:
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  target_version: 3
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  family: template_shared_matched_semantic_anchor
+  residual_fusion: semantic_anchor
+  semantic_alpha_init: [0.10, 0.30, 0.50, 0.60]
+  semantic_anchor_checkpoint: runs/standard_split_v3/static_anchor_seed20260711/checkpoints/best.pt
+  freeze_semantic_anchor_features: true
+
+train:
+  device: cuda
+  epochs: 15
+  batch_size: 4
+  num_workers: 2
+  lr: 0.0001
+  weight_decay: 0.0001
+  amp: true
+  seed: 20260711
+  data_seed: 20260711
+  sampler_seed: 20260711
+  selection_metric: coverage_5_10_with_kld_guard
+  selection_mode: max_with_guard
+  kld_guard_max: 1.102623467486129
+  kld_guard_source: standard_split_tempsal_val_3seed_early_macro_kld_plus_0.02
+  kld_weight: 1.0
+  cc_weight: 0.5
+  semantic_anchor_weight: 1.0
+  semantic_anchor_cc_weight: 0.5
+  semantic_ratio_weight: 0.05
+  semantic_ratio_clip: 4.0
+  tile_kl_weight: 0.15
+  tile_rank_weight: 0.10
+  tile_rank_temperature: 0.25
+  tile_rows: 8
+  tile_cols: 16
+  coverage_budgets: [5.0, 10.0, 15.0, 20.0]
+  coverage_selection_budgets: [5.0, 10.0]
+  outer_test: ordinary_repeatable_evaluation_never_model_selection
+
+statistics:
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260711
+
+protocol:
+  split: train59_val13_test13
+  design_split: train
+  selection_split: val
+  report_split: test
+  forbidden_for_selection: [test]
+  test_may_be_evaluated_repeatedly: true
+

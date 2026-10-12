@@ -1,0 +1,8 @@
+runs:
+  - name: f2_256_static_30ep
+  - name: f2_256_semantic_static_30ep
+  - name: f2_256_semantic_dytsaldmm_30ep
+  - name: f2_256_semantic_dytsaldmm_shuffled_temporal_30ep
+  - name: f2_256_teacher_residual_30ep
+  - name: f2_256_teacher_residual_orderloss_30ep
+  - name: f2_256_teacher_residual_orderloss_shuffled_30ep

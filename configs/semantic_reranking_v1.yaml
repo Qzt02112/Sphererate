@@ -1,0 +1,45 @@
+protocol: semantic_reranking_s0_v1
+
+data:
+  root: data/processed/early_horizon_salient360_spherical2deg_v2
+  selection_split: train
+  evaluation_split: val
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+
+fusion:
+  family: spherical_geometric_product
+  alpha_grid: [0.0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0]
+  alpha_selection: per_horizon_source_train_only
+  kld_guard_over_template: 0.02
+
+coverage:
+  tile_grid: [8, 16]
+  budgets_percent: [5.0, 10.0, 20.0]
+  selection_budgets_percent: [5.0, 10.0]
+
+semantic_sources:
+  gt_final_oracle: evaluation_content_final_gt
+  wrong_image_gt_final: deterministic_derangement_seed20260714
+  deepgaze_raw:
+    root: runs/kernel_v2_deepgaze_msdb/raw
+
+references:
+  device: cuda
+  spherehorizon_checkpoints:
+    - runs/kernel_v2_candidate_correct_seed20260710/checkpoints/best.pt
+    - runs/kernel_v2_candidate_correct_seed20260711/checkpoints/best.pt
+    - runs/kernel_v2_candidate_correct_seed20260712/checkpoints/best.pt
+  tempsal_report: reports/kernel_v2_tempsal_erp_val/results.json
+
+decision:
+  horizon_s: 3.0
+  min_oracle_gain_over_template_at_5_percent: 0.03
+  min_oracle_gain_over_template_at_10_percent: 0.03
+  require_oracle_better_than_wrong_image_ci95: true
+
+output:
+  root: reports/semantic_reranking_s0
+  bootstrap_iterations: 10000
+  bootstrap_seed: 20260714
+  sealed_test_target_loads: 0

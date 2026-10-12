@@ -1,0 +1,35 @@
+{
+  "dataset": "sitzmann_official_vr",
+  "seed": 20260713,
+  "unit": "canonical_scene",
+  "train": [
+    1,
+    2,
+    4,
+    5,
+    7,
+    8,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    19,
+    21
+  ],
+  "val": [
+    3,
+    18,
+    20
+  ],
+  "gate": [
+    0,
+    6,
+    9
+  ],
+  "gate_source_role": "published_scanpath_test_scenes; not a fresh holdout",
+  "zero_scene_overlap": true
+}

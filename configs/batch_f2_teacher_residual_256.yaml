@@ -1,0 +1,40 @@
+runs:
+  - name: f2_256_teacher_residual_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_30ep
+      model.teacher_checkpoint: runs/f2_256_semantic_static_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.0
+      loss.cumulative: 1.0
+      loss.teacher_residual_target: 0.25
+
+  - name: f2_256_teacher_residual_orderloss_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_orderloss_30ep
+      model.teacher_checkpoint: runs/f2_256_semantic_static_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.5
+      loss.cumulative: 2.0
+      loss.teacher_residual_target: 0.5
+
+  - name: f2_256_teacher_residual_orderloss_shuffled_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_orderloss_shuffled_30ep
+      train.shuffle_temporal_labels: true
+      model.teacher_checkpoint: runs/f2_256_semantic_static_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.5
+      loss.cumulative: 2.0
+      loss.teacher_residual_target: 0.5

@@ -1,0 +1,55 @@
+runs:
+  - name: multi360_static_yaw60_30ep
+    model: static
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_static_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+
+  - name: multi360_semantic_static_yaw60_30ep
+    model: semantic_static
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_semantic_static_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+
+  - name: multi360_semantic_dytsaldmm_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_semantic_dytsaldmm_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+
+  - name: multi360_semantic_dytsaldmm_shuffled_yaw60_30ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 30
+      train.experiment: multi360_semantic_dytsaldmm_shuffled_yaw60_30ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.selection_metric: macro_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.shuffle_temporal_labels: true
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3

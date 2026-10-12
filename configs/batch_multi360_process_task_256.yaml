@@ -1,0 +1,49 @@
+runs:
+  - name: multi360_process_task_yaw60_12ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 12
+      train.experiment: multi360_process_task_yaw60_12ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.validate_process_metrics: true
+      train.selection_metric: macro_process_temporal_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.final_kl: 0.0
+      loss.final_cc: 0.0
+      loss.final_nss: 0.0
+      loss.static: 0.0
+      loss.temporal: 0.5
+      loss.temporal_frame_align: 1.0
+      loss.temporal_profile: 1.0
+      loss.cumulative: 0.1
+      loss.accumulation: 0.0
+
+  - name: multi360_process_task_shuffled_yaw60_12ep
+    model: semantic_dytsaldmm
+    overrides:
+      train.epochs: 12
+      train.experiment: multi360_process_task_shuffled_yaw60_12ep
+      train.dataset_balanced_sampling: true
+      train.progress_bar: false
+      train.validate_process_metrics: true
+      train.selection_metric: macro_process_temporal_kld_sph
+      train.selection_mode: min
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.shuffle_temporal_labels: true
+      model.semantic_pretrained: true
+      model.semantic_layer: layer3
+      loss.final_kl: 0.0
+      loss.final_cc: 0.0
+      loss.final_nss: 0.0
+      loss.static: 0.0
+      loss.temporal: 0.5
+      loss.temporal_frame_align: 1.0
+      loss.temporal_profile: 1.0
+      loss.cumulative: 0.1
+      loss.accumulation: 0.0

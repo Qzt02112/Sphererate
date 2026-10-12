@@ -1,0 +1,49 @@
+project:
+  name: spherehorizon_sitzmann_official
+  seed: 20260711
+
+paths:
+  processed_root: data/processed
+  processed_name: sitzmann_official_256x512_spherical2deg_v1
+  runs_root: runs
+  reports_root: reports
+
+data:
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_deg: 2.0
+  target_version: 1
+  declared_start_x_norm: 0.5
+
+model:
+  in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  family: template_time_gated_residual
+
+train:
+  device: cuda
+  epochs: 30
+  batch_size: 4
+  num_workers: 2
+  lr: 0.0003
+  weight_decay: 0.0001
+  amp: true
+  seed: 20260711
+  data_seed: 20260711
+  sampler_seed: 20260711
+  selection_metric: early_macro_kld_sph
+  selection_mode: min
+  kld_weight: 1.0
+  cc_weight: 0.5
+  outer_test: absent
+
+statistics:
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260711

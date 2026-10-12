@@ -1,0 +1,58 @@
+protocol: standard_split_v12c_mechanism_ablation
+decision_split: val
+outer_test_status: ordinary_repeatable_evaluation_never_model_selection
+seed: 20260711
+
+runs:
+  - name: v12c_no_rate_seed20260711
+    role: no_rate
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_start_cost: true
+      accumulation_mode: independent_interval
+
+  - name: v12c_no_start_seed20260711
+    role: no_start
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_start_cost: false
+      accumulation_mode: cumulative_rate
+
+  - name: v12c_no_tile_loss_seed20260711
+    role: no_tile_loss
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_start_cost: true
+      accumulation_mode: cumulative_rate
+    train_overrides:
+      raw_tile_kl_weight: 0.0
+      soft_topk_coverage_weight: 0.0
+
+  # Isolates L_cov: tile supervision (L_tile) stays on, only the
+  # budget-limited coverage objective (Eq. 4) is switched off.
+  - name: v12c_no_cov_seed20260711
+    role: no_cov
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_start_cost: true
+      accumulation_mode: cumulative_rate
+    train_overrides:
+      raw_tile_kl_weight: 0.10
+      soft_topk_coverage_weight: 0.0
+
+  # Isolates L_tile: coverage supervision (L_cov) stays on, only the
+  # raw-tile KL objective (Eq. 3) is switched off.  Completes the 2x2.
+  - name: v12c_no_tile_only_seed20260711
+    role: no_tile_only
+    conditioning_mode: time
+    target_mode: correct
+    model_overrides:
+      use_start_cost: true
+      accumulation_mode: cumulative_rate
+    train_overrides:
+      raw_tile_kl_weight: 0.0
+      soft_topk_coverage_weight: 0.20

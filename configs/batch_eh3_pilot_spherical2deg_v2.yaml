@@ -1,0 +1,22 @@
+protocol: start_aligned_early_horizon_saliency_kernel_v2
+gate: kernel-v2-single-seed-revalidation
+decision_split: gate
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: kernel_v2_candidate_correct_seed20260711
+    role: candidate_correct
+    conditioning_mode: time
+    target_mode: correct
+
+  - name: kernel_v2_candidate_shuffled_label_seed20260711
+    role: candidate_shuffled_label
+    conditioning_mode: time
+    target_mode: shuffled
+
+  - name: kernel_v2_capacity_non_temporal_seed20260711
+    role: capacity_non_temporal
+    conditioning_mode: capacity
+    target_mode: correct

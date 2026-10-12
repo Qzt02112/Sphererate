@@ -1,0 +1,54 @@
+protocol: P1_start_conditioned
+gate: P1-B
+claim_tested: start-image interaction outperforms coordinate-only and is not specific to one conditioning layer
+condition_input: continuous_equatorial_start_longitude
+locked_baseline: gate_a_static_semantic_finalonly_natural_seed20260710
+matched_control: same manifest target augmentation budget seed and frozen semantic teacher
+decision_rule: selected simplest model beats static analytic-prior and learned-start-only while actual beats swapped and random
+test_status: frozen_not_evaluated
+execution_status: stopped_after_learned_start_only_hard_failure
+
+runs:
+  - name: p1_pilot_learned_start_only_seed20260710
+    model: learned_start_only
+    status: completed_formal_control
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: p1_pilot_learned_start_only_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt
+
+  - name: p1_pilot_direct_start_seed20260710
+    model: direct_start_conditioned
+    status: incomplete_diagnostic_do_not_use
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: p1_pilot_direct_start_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt
+
+  - name: p1_pilot_film_start_seed20260710
+    model: film_start_conditioned
+    status: not_executed_after_gate_failure
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: p1_pilot_film_start_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt
+
+  - name: p1_pilot_bounded_residual_seed20260710
+    model: start_conditioned_light_residual
+    status: not_executed_after_gate_failure
+    overrides:
+      project.seed: 20260710
+      train.data_seed: 20260710
+      train.sampler_seed: 20260710
+      train.startpoint_random_seed: 20260710
+      train.experiment: p1_pilot_bounded_residual_seed20260710
+      model.teacher_checkpoint: runs/gate_a_static_semantic_finalonly_natural_seed20260710/checkpoints/best.pt

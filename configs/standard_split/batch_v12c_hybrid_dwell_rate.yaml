@@ -1,0 +1,10 @@
+protocol: standard_split_v12c_hybrid_dwell_rate
+decision_split: val
+outer_test_status: ordinary_repeatable_evaluation_never_model_selection
+seed: 20260711
+
+runs:
+  - name: v12c_hybrid_dwell_rate_seed20260711
+    role: v12c_hybrid_dwell_rate
+    conditioning_mode: time
+    target_mode: correct

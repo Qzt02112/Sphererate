@@ -1,0 +1,47 @@
+protocol: P1_start_conditioned
+gate: P1-C
+name: frozen_val_start_longitude_perturbation_v1
+status: frozen_at_p1_a
+
+scope:
+  dataset: jufe_start_conditioned
+  split: val
+  coordinate: equatorial_longitude_only
+  latitude_deg: 0.0
+  claim: condition-response robustness on unseen content
+  excluded_claims:
+    - unseen_longitude_generalization
+    - latitude_generalization
+    - arbitrary_2d_viewpoint_generalization
+
+evaluation:
+  checkpoint_policy: same_actual_trained_checkpoint_for_all_offsets
+  target_policy: keep_rgb_target_and_checkpoint_fixed
+  changed_input: start_longitude_only
+  angular_offsets_deg: [0, 15, 30, 60, 90, 180]
+  sign_policy: deterministic_sha256_image_id_and_seed
+  sign_seed: 20260710
+  longitude_wrap: half_open_minus180_180
+  test_access: forbidden
+
+metrics:
+  primary: [kld_sph, sim_sph]
+  secondary: [cc_sph, nss, auc_judd]
+  grouping: base_image_id
+  report:
+    - mean_by_absolute_offset
+    - paired_delta_from_zero_offset
+    - group_bootstrap_95ci
+    - per_seed_direction
+
+decision_rule:
+  expected_behavior: correct_start_is_best_or_tied_and_performance_degrades_smoothly_with_angular_error
+  hard_failure: large_offsets_systematically_outperform_zero_or_response_is_unrelated_to_offset
+
+start_region_holdout:
+  status: infeasible_for_current_protocol
+  reason: >-
+    JUFE validation longitudes lie within 2 degrees of the training support, while
+    yaw-roll augmentation changes absolute longitude sectors. An absolute-sector
+    holdout would therefore test an augmentation convention rather than a stable
+    unseen-coordinate property.

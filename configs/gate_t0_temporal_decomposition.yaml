@@ -1,0 +1,50 @@
+# HISTORICAL/CLOSED: referenced JUFE data were cleaned on 2026-07-13.
+protocol: temporal_start_content_factorization
+gate: T0
+claim_tested: start influence decreases and content contribution increases across six viewing stages
+network_training: forbidden
+test_status: frozen_not_evaluated
+
+paths:
+  conditioned_root: data/processed/jufe_start_conditioned_256x512_k6_order_groupdisjoint_v1
+  static_predictions_root: reports/gate_r0_content_interaction/predictions/static
+  start_only_predictions_root: reports/gate_r0_content_interaction/predictions/start_only
+  wrong_image_mapping: reports/gate_r0_content_interaction/wrong_image_mapping.csv
+  output_root: reports/gate_t0_temporal_decomposition
+
+temporal:
+  num_bins: 6
+  fixed_bin_weights: [0.1666666667, 0.1666666667, 0.1666666667, 0.1666666667, 0.1666666667, 0.1666666667]
+  alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  constant_alpha: 0.65
+  monotonic: nonincreasing
+  shuffled_alpha_seed: 20260711
+  minimum_alpha_drop: 0.2
+
+reliability:
+  observer_split_seed: 20260711
+  expected_observers: 15
+  expected_samples_per_observer: 300
+  expected_samples_per_bin_per_observer: 50
+  sigma_px: 10.0
+  different_image_seed: 20260712
+
+statistics:
+  primary_metrics: [kld_sph, sim_sph]
+  secondary_metrics: [cc_sph, nss, auc_judd]
+  bootstrap_group: base_image_id
+  bootstrap_iterations: 10000
+  bootstrap_seed: 20260711
+
+runtime:
+  alpha_device: cuda
+
+decision_rule:
+  require_start_explanation_decline: true
+  require_content_explanation_increase: true
+  require_late_residual_reliability: true
+  require_nonconstant_monotonic_alpha: true
+  require_final_primary_positive_ci: true
+  require_order_controls: true
+  require_wrong_image_control: true
+  pass: all_components_true

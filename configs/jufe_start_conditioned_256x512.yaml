@@ -1,0 +1,93 @@
+project:
+  name: sphererate
+  seed: 20260708
+
+paths:
+  raw_root: ${SCANDMM_ROOT}/data/raw
+  scandmm_processed_root: ${SCANDMM_ROOT}/data/processed
+  third_party_root: ${SCANDMM_ROOT}/baselines/third_party
+  processed_root: data/processed
+  runs_root: runs
+  reports_root: reports
+
+data:
+  dataset: jufe_start_conditioned
+  processed_name: jufe_start_conditioned_256x512_k6_order
+  image_size: [256, 512]
+  num_bins: 6
+  split_seed: 20260708
+  val_fraction: 0.15
+  test_fraction: 0.0
+  map_kernel: erp
+  sigma_px: 10.0
+  area_weighted: true
+  use_official_final_map: false
+  max_images:
+
+train:
+  task: saliency
+  model: start_conditioned_teacher_residual
+  experiment: jufe_start_conditioned_teacher_residual_smoke
+  device: cuda
+  epochs: 3
+  batch_size: 2
+  num_workers: 2
+  lr: 0.0003
+  weight_decay: 0.0001
+  amp: true
+  selection_metric: kld_sph
+  selection_mode: min
+  dataset_balanced_sampling: false
+  augment_roll: true
+  augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+  shuffle_temporal_labels: false
+  condition_prefix_bins: 0
+  condition_prefix_step_channel: false
+  condition_startpoint_channels: true
+  startpoint_condition_mode: actual
+  startpoint_prior_sigma_px: 10.0
+  max_train_samples:
+  max_val_samples:
+  save_predictions: true
+
+model:
+  in_channels: 13
+  static_in_channels: 8
+  base_channels: 32
+  hidden_channels: 64
+  num_bins: 6
+  learned_accumulation: true
+  mixer_use_temporal: true
+  semantic_backbone: resnet18
+  semantic_layer: layer3
+  semantic_pretrained: true
+  teacher_checkpoint: runs/multi360_semantic_static_yaw60_30ep/checkpoints/best.pt
+  teacher_residual_scale: 1.0
+  teacher_residual_init_gate: -1.5
+  use_start_prior: false
+
+loss:
+  final_kl: 1.0
+  final_cc: 1.0
+  final_nss: 0.1
+  condition_contrastive: 0.0
+  condition_contrastive_margin: 0.02
+  static: 0.25
+  temporal: 0.5
+  cumulative: 0.5
+  temporal_bin_kld: 0.0
+  cumulative_bin_kld: 0.0
+  temporal_process_tv: 0.0
+  cumulative_process_tv: 0.0
+  accumulation: 0.1
+  memory: 0.01
+  residual: 0.0001
+  teacher_residual_target: 0.0
+  teacher_residual_target_clip: 4.0
+  teacher_residual_topk: 0.0
+  teacher_residual_topk_frac: 0.1
+  teacher_residual_peak: 0.0
+
+eval:
+  eps: 0.0000001
+  area_weighted: true

@@ -1,0 +1,12 @@
+protocol: spherehorizon_v12_standalone_dwell_rate
+gate: V12A-val-only-feasibility
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v12a_spherical_dwell_rate_seed20260711
+    role: v12a_spherical_dwell_rate
+    conditioning_mode: time
+    target_mode: correct

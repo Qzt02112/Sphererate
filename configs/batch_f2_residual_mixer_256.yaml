@@ -1,0 +1,25 @@
+runs:
+  - name: f2_256_directsum_30ep
+    model: directsum
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_directsum_30ep
+
+  - name: f2_256_tempsal_mixer_30ep
+    model: tempsal_mixer
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_tempsal_mixer_30ep
+
+  - name: f2_256_residual_mixer_30ep
+    model: residual_mixer
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_residual_mixer_30ep
+
+  - name: f2_256_residual_mixer_no_temporal_inputs_30ep
+    model: residual_mixer
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_residual_mixer_no_temporal_inputs_30ep
+      model.mixer_use_temporal: false

@@ -1,0 +1,91 @@
+runs:
+  - name: f2_256_tempsal_temporal_yaw60_30ep
+    model: semantic_tempsal_temporal
+    overrides:
+      train.experiment: f2_256_tempsal_temporal_yaw60_30ep
+      train.epochs: 30
+      train.batch_size: 2
+      train.max_train_samples:
+      train.max_val_samples:
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.selection_metric: loss/temporal_bin_kld_loss
+      train.selection_mode: min
+      loss.final_kl: 0.0
+      loss.final_cc: 0.0
+      loss.final_nss: 0.0
+      loss.static: 0.0
+      loss.temporal: 1.0
+      loss.cumulative: 0.25
+      loss.temporal_bin_kld: 1.0
+      loss.cumulative_bin_kld: 0.0
+      loss.temporal_process_tv: 0.0
+      loss.cumulative_process_tv: 0.0
+      loss.accumulation: 0.0
+      loss.memory: 0.0
+      loss.residual: 0.0
+      loss.teacher_residual_target: 0.0
+
+  - name: f2_256_tempsal_staged_yaw60_30ep
+    model: semantic_tempsal_fusion
+    overrides:
+      train.experiment: f2_256_tempsal_staged_yaw60_30ep
+      train.epochs: 30
+      train.batch_size: 2
+      train.max_train_samples:
+      train.max_val_samples:
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.selection_metric: kld_sph
+      train.selection_mode: min
+      model.temporal_checkpoint: runs/f2_256_tempsal_temporal_yaw60_30ep/checkpoints/best.pt
+      model.static_checkpoint: runs/f2_256_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.freeze_temporal: true
+      model.freeze_static: true
+      model.shuffle_temporal_inputs: false
+      loss.final_kl: 1.0
+      loss.final_cc: 1.0
+      loss.final_nss: 0.1
+      loss.static: 0.0
+      loss.temporal: 0.0
+      loss.cumulative: 0.0
+      loss.temporal_bin_kld: 0.0
+      loss.cumulative_bin_kld: 0.0
+      loss.temporal_process_tv: 0.0
+      loss.cumulative_process_tv: 0.0
+      loss.accumulation: 0.0
+      loss.memory: 0.0
+      loss.residual: 0.0
+      loss.teacher_residual_target: 0.0
+
+  - name: f2_256_tempsal_staged_shuffled_yaw60_30ep
+    model: semantic_tempsal_fusion
+    overrides:
+      train.experiment: f2_256_tempsal_staged_shuffled_yaw60_30ep
+      train.epochs: 30
+      train.batch_size: 2
+      train.max_train_samples:
+      train.max_val_samples:
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.selection_metric: kld_sph
+      train.selection_mode: min
+      model.temporal_checkpoint: runs/f2_256_tempsal_temporal_yaw60_30ep/checkpoints/best.pt
+      model.static_checkpoint: runs/f2_256_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.freeze_temporal: true
+      model.freeze_static: true
+      model.shuffle_temporal_inputs: true
+      loss.final_kl: 1.0
+      loss.final_cc: 1.0
+      loss.final_nss: 0.1
+      loss.static: 0.0
+      loss.temporal: 0.0
+      loss.cumulative: 0.0
+      loss.temporal_bin_kld: 0.0
+      loss.cumulative_bin_kld: 0.0
+      loss.temporal_process_tv: 0.0
+      loss.cumulative_process_tv: 0.0
+      loss.accumulation: 0.0
+      loss.memory: 0.0
+      loss.residual: 0.0
+      loss.teacher_residual_target: 0.0

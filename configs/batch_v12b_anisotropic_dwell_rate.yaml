@@ -1,0 +1,12 @@
+protocol: spherehorizon_v12_anisotropic_dwell_rate
+gate: V12B-val-only-feasibility
+decision_split: val
+development_gate_fresh: false
+outer_test_status: previously_used_under_v1_targets
+seed: 20260711
+
+runs:
+  - name: v12b_anisotropic_dwell_rate_seed20260711
+    role: v12b_anisotropic_dwell_rate
+    conditioning_mode: time
+    target_mode: correct

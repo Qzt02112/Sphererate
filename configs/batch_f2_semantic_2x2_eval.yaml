@@ -1,0 +1,6 @@
+runs:
+  - name: f2_256_static_30ep
+  - name: f2_256_dytsaldmm_default_30ep
+  - name: f2_256_semantic_static_30ep
+  - name: f2_256_semantic_dytsaldmm_30ep
+  - name: f2_256_semantic_dytsaldmm_shuffled_temporal_30ep

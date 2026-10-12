@@ -1,0 +1,25 @@
+runs:
+  - name: f2_opt_smoke_static
+    model: static
+    overrides:
+      train.epochs: 1
+      train.experiment: f2_opt_smoke_static
+      train.max_train_samples: 4
+      train.max_val_samples: 2
+
+  - name: f2_opt_smoke_dytsaldmm_default
+    model: dytsaldmm
+    overrides:
+      train.epochs: 1
+      train.experiment: f2_opt_smoke_dytsaldmm_default
+      train.max_train_samples: 4
+      train.max_val_samples: 2
+
+  - name: f2_opt_smoke_dytsaldmm_fixed_accumulation
+    model: dytsaldmm
+    overrides:
+      train.epochs: 1
+      train.experiment: f2_opt_smoke_dytsaldmm_fixed_accumulation
+      train.max_train_samples: 4
+      train.max_val_samples: 2
+      model.learned_accumulation: false

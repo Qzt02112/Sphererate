@@ -1,0 +1,55 @@
+runs:
+  - name: f2_256_teacher_residual_topk_yaw60_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_topk_yaw60_30ep
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.teacher_checkpoint: runs/f2_256_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.5
+      loss.cumulative: 2.0
+      loss.teacher_residual_target: 0.5
+      loss.teacher_residual_topk: 0.5
+      loss.teacher_residual_topk_frac: 0.1
+      loss.teacher_residual_peak: 0.0
+
+  - name: f2_256_teacher_residual_topk_peak_yaw60_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_topk_peak_yaw60_30ep
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      model.teacher_checkpoint: runs/f2_256_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.5
+      loss.cumulative: 2.0
+      loss.teacher_residual_target: 0.5
+      loss.teacher_residual_topk: 0.5
+      loss.teacher_residual_topk_frac: 0.1
+      loss.teacher_residual_peak: 0.25
+
+  - name: f2_256_teacher_residual_topk_peak_shuffled_yaw60_30ep
+    model: semantic_teacher_residual
+    overrides:
+      train.epochs: 30
+      train.experiment: f2_256_teacher_residual_topk_peak_shuffled_yaw60_30ep
+      train.augment_roll: true
+      train.augment_roll_degrees: [0, 60, 120, 180, 240, 300]
+      train.shuffle_temporal_labels: true
+      model.teacher_checkpoint: runs/f2_256_semantic_static_yaw60_30ep/checkpoints/best.pt
+      model.teacher_residual_scale: 2.0
+      model.teacher_residual_init_gate: -1.0
+      loss.static: 0.0
+      loss.temporal: 1.5
+      loss.cumulative: 2.0
+      loss.teacher_residual_target: 0.5
+      loss.teacher_residual_topk: 0.5
+      loss.teacher_residual_topk_frac: 0.1
+      loss.teacher_residual_peak: 0.25

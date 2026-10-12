@@ -1,0 +1,23 @@
+protocol: start_aligned_early_horizon_saliency
+gate: EH3-single-seed-pilot
+decision_split: gate
+development_gate_fresh: false
+outer_test_status: sealed_not_materialized
+seed: 20260711
+
+runs:
+  - name: eh3_candidate_correct_seed20260711
+    role: candidate_correct
+    conditioning_mode: time
+    target_mode: correct
+
+  - name: eh3_candidate_shuffled_label_seed20260711
+    role: candidate_shuffled_label
+    conditioning_mode: time
+    target_mode: shuffled
+
+  - name: eh3_capacity_non_temporal_seed20260711
+    role: capacity_non_temporal
+    conditioning_mode: capacity
+    target_mode: correct
+

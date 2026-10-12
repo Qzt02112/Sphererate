@@ -1,0 +1,50 @@
+project:
+  name: sphererate_standard_split_v3
+  seed: 20260711
+
+paths:
+  raw_source_manifest: data/processed/salient360_256x512_k6_order/manifest.jsonl
+  canonical_split_source: data/splits/future_saliency_contentdisjoint_seed20260711.json
+  standard_split_file: data/splits/salient360_standard_train59_val13_test13_seed20260711.json
+  source_view_root: data/processed/salient360_standard_train59_val13_test13_seed20260711
+  processed_root: data/processed/early_horizon_salient360_spherical2deg_standard_v3
+  runs_root: runs/standard_split_v3
+  reports_root: reports/standard_split_v3
+
+data:
+  dataset: salient360_early_horizon
+  protocol: train59_val13_test13
+  target_version: 3
+  image_size: [256, 512]
+  horizons_s: [0.5, 1.0, 3.0, 5.0]
+  primary_horizons_s: [0.5, 1.0, 3.0]
+  renderer: sphere_chord
+  sigma_px: null
+  sigma_deg: 2.0
+  area_weighted: true
+  primary_eye: R
+  sensitivity_eye: L
+  declared_start_yaw_deg: 90.0
+  canonical_start_x_norm: 0.75
+  test_access_policy: ordinary_repeatable_evaluation_never_model_selection
+
+application:
+  tile_grid: [8, 16]
+  budgets_percent: [5, 10, 15, 20]
+  primary_budget_percent: 10
+  budget_rounding: ceil
+  coverage: raw_clipped_fixation_dwell_fraction
+
+statistics:
+  aggregation: macro_per_content
+  bootstrap_group: canonical_content_id
+  bootstrap_resamples: 10000
+  bootstrap_seed: 20260711
+
+selection:
+  fit_split: train
+  checkpoint_split: val
+  report_split: test
+  test_may_be_evaluated_repeatedly: true
+  test_may_select_model_or_hyperparameters: false
+
